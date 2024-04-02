@@ -11,5 +11,8 @@
     "start": "node server.js"
   },
   "author": "Nkwada Nora Solonko",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^12.0.0"
+  }
 }
