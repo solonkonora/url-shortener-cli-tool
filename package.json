@@ -13,6 +13,7 @@
   "author": "Nkwada Nora Solonko",
   "license": "ISC",
   "dependencies": {
-    "commander": "^12.0.0"
+    "commander": "^12.0.0",
+    "pg": "^8.11.5"
   }
 }
