@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require('sequelize');
 
-const ShortUrl = sequelize.define('ShortUrl', {
+const ShortUrl = Sequelize.define('ShortUrl', {
     full: {
         type: DataTypes.STRING,
         allowNull: false,
