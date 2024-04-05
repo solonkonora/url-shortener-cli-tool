@@ -8,14 +8,14 @@ const sequelize = new Sequelize('clitool', 'nkwada', 'norash', {
 
 const Url = sequelize.define('url', {
   long_url: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: false,
     validate: {
       notEmpty: true, // The long_url cannot be empty
     },
   },
   short_url: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: false,
     unique: true,
     validate: {
@@ -66,45 +66,72 @@ function generateRandomString(length) {
 }
 
 
+// async function generateShortURL(url) {
+//   try {
+//     let shortUrl;
+//     let isUnique = false;
+//     let attempt = 0;
+//     const maxAttempts = 10; // Maximum number of attempts to generate a unique short URL
+
+//     while (!isUnique && attempt < maxAttempts) {
+//       shortUrl = generateRandomString(10); // Generate a random string of length 8
+//       const existingUrl = await Url.findOne({ where: { short_url: shortUrl } });
+//       if (!existingUrl) {
+//         isUnique = true;
+//       }
+//       attempt++;
+//     }
+
+//     if (!isUnique) {
+//       throw new Error('Unable to generate a unique short URL.');
+//     }
+
+//     const shortenedURL = await Url.create({
+//       long_url: url,
+//       short_url: shortUrl,
+//     });
+//     return shortenedURL.short_url;
+//   } catch (error) {
+//     console.error('Error creating shortened URL:', error);
+//     throw error; // Rethrow the error to handle it at a higher level
+//   }
+// }
+
+
 async function generateShortURL(url) {
   try {
-    let shortUrl;
-    let isUnique = false;
-    let attempt = 0;
-    const maxAttempts = 10; // Maximum number of attempts to generate a unique short URL
-
-    while (!isUnique && attempt < maxAttempts) {
-      shortUrl = generateRandomString(10); // Generate a random string of length 8
-      const existingUrl = await Url.findOne({ where: { short_url: shortUrl } });
-      if (!existingUrl) {
-        isUnique = true;
+    const bitlyAPIKey = 'BITLY_API_KEY';
+    const bitlyAPIEndpoint = `https://api-ssl.bitly.com/v4/shorten`;
+    const response = await axios.post(
+      bitlyAPIEndpoint,
+      {
+        long_url: url
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${bitlyAPIKey}`,
+          'Content-Type': 'application/json'
+        }
       }
-      attempt++;
-    }
-
-    if (!isUnique) {
-      throw new Error('Unable to generate a unique short URL.');
-    }
-
-    const shortenedURL = await Url.create({
-      long_url: url,
-      short_url: shortUrl,
-    });
-    return shortenedURL.short_url;
+    );
+    const shortenedURL = response.data.link;
+    return shortenedURL;
   } catch (error) {
-    console.error('Error creating shortened URL:', error);
-    throw error; // Rethrow the error to handle it at a higher level
+    console.error('Error generating shortened URL:', error.message);
+    throw error;
   }
 }
 
 
-
 async function listShortenedURLs() {
-  const shortenedURLs = await Url.findAll();
-  console.log('Your shortened URLs:');
-  shortenedURLs.forEach((shortURL) => {
-    console.log(`ID: ${shortURL.id}, URL: ${shortURL.long_url}`);
+  const shortenedURLs = await Url.findAll({
+    attributes: ['id', 'long_url'] // Exclude createdAt and updatedAt columns wh is the cause for the additional 2 columns displayed on the console
   });
+  let output = 'Your shortened URLs:\n';
+  shortenedURLs.forEach((shortURL) => {
+    output += `ID: ${shortURL.id}, URL: ${shortURL.long_url}\n`;
+  });
+  console.log(output);
 }
 
 program.parse(process.argv);
