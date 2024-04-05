@@ -6,36 +6,52 @@ const sequelize = new Sequelize('clitool', 'nkwada', 'norash', {
   dialect: 'postgres',
 });
 
-const Url = sequelize.define('Url', {
-  longUrl: {
+const Url = sequelize.define('url', {
+  long_url: {
     type: DataTypes.TEXT,
     allowNull: false,
+    validate: {
+      notEmpty: true, // The long_url cannot be empty
+    },
   },
-  shortUrl: {
+  short_url: {
     type: DataTypes.TEXT,
     allowNull: false,
     unique: true,
+    validate: {
+      notEmpty: true, // The short_url cannot be empty
+    },
   },
+}, {
+  tableName: 'urls',
+  timestamps: false, // Disable timestamps createdAt $ updateAt
 });
 
 program
   .version('1.0.0')
   .description('URL Shortener CLI Tool');
 
-program
-  //.command('shorten <url>', { name: 'shorten' })
+  program
   .command('shorten <url>')
   .description('Shorten a URL')
   .action(async (url) => {
-    const shortenedURL = await generateShortURL(url);
-    console.log(`Shortened URL: ${shortenedURL}`);
+    try {
+      const shortenedURL = await generateShortURL(url);
+      console.log(`Shortened URL: ${shortenedURL}`);
+    } catch (error) {
+      console.error('Error generating shortened URL:', error.message);
+    }
   });
 
 program
   .command('list')
   .description('List all shortened URLs')
   .action(async () => {
-    await listShortenedURLs();
+    try {
+      await listShortenedURLs();
+    } catch (error) {
+      console.error('Error retrieving shortened URLs:', error);
+    }
   });
 
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -49,37 +65,46 @@ function generateRandomString(length) {
   return result;
 }
 
+
 async function generateShortURL(url) {
   try {
     let shortUrl;
     let isUnique = false;
-    while (!isUnique) {
-      shortUrl = generateRandomString(8); // Generate a random string of length 8
-      const existingUrl = await Url.findOne({ where: { shortUrl } });
+    let attempt = 0;
+    const maxAttempts = 10; // Maximum number of attempts to generate a unique short URL
+
+    while (!isUnique && attempt < maxAttempts) {
+      shortUrl = generateRandomString(10); // Generate a random string of length 8
+      const existingUrl = await Url.findOne({ where: { short_url: shortUrl } });
       if (!existingUrl) {
         isUnique = true;
       }
+      attempt++;
     }
+
+    if (!isUnique) {
+      throw new Error('Unable to generate a unique short URL.');
+    }
+
     const shortenedURL = await Url.create({
-      longUrl: url,
-      shortUrl: shortUrl,
+      long_url: url,
+      short_url: shortUrl,
     });
-    return shortenedURL.shortUrl;
+    return shortenedURL.short_url;
   } catch (error) {
     console.error('Error creating shortened URL:', error);
+    throw error; // Rethrow the error to handle it at a higher level
   }
 }
 
+
+
 async function listShortenedURLs() {
-  try {
-    const shortenedURLs = await Url.findAll();
-    console.log('Your shortened URLs:');
-    shortenedURLs.forEach((shortURL) => {
-      console.log(`ID: ${shortURL.id}, URL: ${shortURL.longUrl}`);
-    });
-  } catch (error) {
-    console.error('Error retrieving shortened URLs:', error);
-  }
+  const shortenedURLs = await Url.findAll();
+  console.log('Your shortened URLs:');
+  shortenedURLs.forEach((shortURL) => {
+    console.log(`ID: ${shortURL.id}, URL: ${shortURL.long_url}`);
+  });
 }
 
 program.parse(process.argv);

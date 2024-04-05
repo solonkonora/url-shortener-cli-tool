@@ -9,7 +9,7 @@ program
 //   .version('1.0.0') 
   .description('URL Shortener CLI Tool');
 
-program.addCommand(shortenCommand);
+//program.addCommand(shortenCommand);
 
 sequelize
   .authenticate()
