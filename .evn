@@ -1,6 +1,6 @@
-DB_HOST=localhost
-DB_USER=nkwada
-DB_PASSWORD=norash
-API_KEY=8f6ecbe4e3941ac956ba1d450078d0bd3088e541
-DB_NAME=clitool
-PORT=5432
+DB_HOST= localhost
+DB_USER= nkwada
+DB_PASSWORD= norash
+DB_DATABASE= clitool
+PORT= 5432
+API_KEY= 8f6ecbe4e3941ac956ba1d450078d0bd3088e541

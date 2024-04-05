@@ -1,5 +1,7 @@
 const { program } = require('commander');
 const { Sequelize, DataTypes } = require('sequelize');
+const axios = require('axios').default;
+
 
 const sequelize = new Sequelize('clitool', 'nkwada', 'norash', {
   host: 'localhost',
@@ -54,82 +56,38 @@ program
     }
   });
 
-const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-function generateRandomString(length) {
-  let result = '';
-  for (let i = 0; i < length; i++) {
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    result += characters.charAt(randomIndex);
-  }
-  return result;
-}
-
-
-// async function generateShortURL(url) {
-//   try {
-//     let shortUrl;
-//     let isUnique = false;
-//     let attempt = 0;
-//     const maxAttempts = 10; // Maximum number of attempts to generate a unique short URL
-
-//     while (!isUnique && attempt < maxAttempts) {
-//       shortUrl = generateRandomString(10); // Generate a random string of length 8
-//       const existingUrl = await Url.findOne({ where: { short_url: shortUrl } });
-//       if (!existingUrl) {
-//         isUnique = true;
-//       }
-//       attempt++;
-//     }
-
-//     if (!isUnique) {
-//       throw new Error('Unable to generate a unique short URL.');
-//     }
-
-//     const shortenedURL = await Url.create({
-//       long_url: url,
-//       short_url: shortUrl,
-//     });
-//     return shortenedURL.short_url;
-//   } catch (error) {
-//     console.error('Error creating shortened URL:', error);
-//     throw error; // Rethrow the error to handle it at a higher level
-//   }
-// }
-
 
 async function generateShortURL(url) {
   try {
-    const bitlyAPIKey = 'BITLY_API_KEY';
-    const bitlyAPIEndpoint = `https://api-ssl.bitly.com/v4/shorten`;
-    const response = await axios.post(
-      bitlyAPIEndpoint,
-      {
-        long_url: url
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${bitlyAPIKey}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
-    const shortenedURL = response.data.link;
-    return shortenedURL;
+    const cleanUriEndpoint = 'https://cleanuri.com/api/v1/shorten';
+
+    const response = await axios.post(cleanUriEndpoint, {
+      url: url
+    });
+
+    const shortenedURL = response.data.result_url;
+    
+    // creatx new row in urls table and storing the links to it in the db
+    const createdUrl = await Url.create({
+      long_url: url,
+      short_url: shortenedURL
+    });
+
+    return createdUrl.short_url;
+
   } catch (error) {
-    console.error('Error generating shortened URL:', error.message);
+    console.error('Error generating shortened URL:', error);
     throw error;
   }
 }
 
-
 async function listShortenedURLs() {
   const shortenedURLs = await Url.findAll({
-    attributes: ['id', 'long_url'] // Exclude createdAt and updatedAt columns wh is the cause for the additional 2 columns displayed on the console
+    attributes: ['id', 'short_url'] // Exclude createdAt and updatedAt columns wh is the cause for the additional 2 columns displayed on the console
   });
   let output = 'Your shortened URLs:\n';
   shortenedURLs.forEach((shortURL) => {
-    output += `ID: ${shortURL.id}, URL: ${shortURL.long_url}\n`;
+    output += `ID: ${shortURL.id}, URL: ${shortURL.short_url}\n`;
   });
   console.log(output);
 }

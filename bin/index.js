@@ -2,8 +2,7 @@
 const { program } = require('commander');
 const shortenCommand = require('../commands/shorten.js');
 const sequelize = require('../db_sequelize.js'); 
-require('dotenv').config();
-// const { program } = require('../commands/shorten.js');
+// const axios = require('axios');
 
 program
   .name('url-shortener-cli-tool') 
