@@ -12,28 +12,34 @@ The URL Shortener CLI Tool is a command-line interface (CLI) application that al
 
 Before using the URL Shortener CLI Tool, you need to configure the PostgreSQL database connection. Follow these steps:
 
-1. Open the `cli.js` file in a text editor.
+1. Open the `db_sequelize.js` file in a text editor.
 2. Locate the following lines of code:
 
    ```javascript
-   const sequelize = new Sequelize('clitool', 'nkwada', 'norash', {
-     host: 'localhost',
-     dialect: 'postgres',
-   });
+
+   const sequelize = new Sequelize(
+  process.env.DB_DATABASE,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    dialect: 'postgres',
+    host: process.env.DB_HOST,
+
+  });
    ```
 
-3. Modify the parameters to match your PostgreSQL database configuration. Replace `'clitool'` with your database name, `'nkwada'` with your database username, and `'norash'` with your database password.
+3. Modify the parameters to match your PostgreSQL database configuration. Replace `'process.env.DB_DATABASE'` with your database name, `'process.env.DB_USER'` with your database username, and `'process.env.DB_PASSWORD'` with your database password.
 
 ## Usage
 
-To use the URL Shortener CLI Tool, run the `cli.js` script followed by the desired command.
+To use the URL Shortener CLI Tool, run the `bin/index.js` script followed by the desired command.
 
 ### Command: shorten
 
 Use the `shorten` command to shorten a URL.
 
 ```shell
-node cli.js shorten <url>
+node bin/index.js shorten <url>
 ```
 
 Replace `<url>` with the long URL that you want to shorten.
@@ -41,7 +47,7 @@ Replace `<url>` with the long URL that you want to shorten.
 Example:
 
 ```shell
-node cli.js shorten https://www.example.com
+node bin/index.js shorten https://www.example.com
 ```
 
 ### Command: list
@@ -49,13 +55,13 @@ node cli.js shorten https://www.example.com
 Use the `list` command to list all previously shortened URLs.
 
 ```shell
-node cli.js list
+node bin/index.js list
 ```
 
 Example:
 
 ```shell
-node cli.js list
+node bin/index.js list
 ```
 
 ## License
