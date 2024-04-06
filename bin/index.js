@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 const { program } = require('commander');
-// const shortenCommand = require('../commands/shorten.js');
 const { runCLI } = require('../commands/shorten.js');
 const sequelize = require('../db_sequelize.js'); 
 const axios = require('axios');
@@ -15,12 +14,12 @@ sequelize
   .authenticate()
   .then(() => {
     console.log('Database connection has been established successfully.');
-    program.parse(process.argv);
+    //program.parse(process.argv);
+    runCLI();
   })
   .catch((error) => {
     console.error('Unable to connect to the database:', error);
   });
 
-  program.parse(process.argv);
-  runCLI();
+ //program.parse(process.argv);
 
