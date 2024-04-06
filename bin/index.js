@@ -1,15 +1,15 @@
 #! /usr/bin/env node
 const { program } = require('commander');
-const shortenCommand = require('../commands/shorten.js');
+// const shortenCommand = require('../commands/shorten.js');
+const { runCLI } = require('../commands/shorten.js');
 const sequelize = require('../db_sequelize.js'); 
-// const axios = require('axios');
+const axios = require('axios');
+require('dotenv').config();
 
 program
   .name('url-shortener-cli-tool') 
 //   .version('1.0.0') 
   .description('URL Shortener CLI Tool');
-
-//program.addCommand(shortenCommand);
 
 sequelize
   .authenticate()
@@ -22,3 +22,5 @@ sequelize
   });
 
   program.parse(process.argv);
+  runCLI();
+

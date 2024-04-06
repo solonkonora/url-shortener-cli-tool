@@ -1,25 +1,20 @@
-//api https://cleanuri.com/api/v1/shorten
+const { Sequelize } = require('sequelize');
+require('dotenv').config();
 
 // const sequelize = new Sequelize('clitool', 'nkwada', 'norash', {
 //   host: 'localhost',
 //   dialect: 'postgres',
 // });
 
-const { Sequelize } = require('sequelize');
+const sequelize = new Sequelize(
+  process.env.DB_DATABASE,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    dialect: 'postgres',
+    host: process.env.DB_HOST,
 
-const sequelize = new Sequelize('clitool', 'nkwada', 'norash', {
-  host: 'localhost',
-  dialect: 'postgres',
-});
-
-// const sequelize = new Sequelize({
-//   dialect: 'postgres',
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USER,
-//   password: process.env.DB_PASSWORD,
-//   database: process.env.DB_NAME,
-//   port: process.env.PORT
-// });
+  });
 
 sequelize.authenticate()
   .then(() => {

@@ -1,12 +1,18 @@
 const { program } = require('commander');
 const { Sequelize, DataTypes } = require('sequelize');
 const axios = require('axios').default;
+require('dotenv').config();
 
+function runCLI() {
+const sequelize = new Sequelize(
+  process.env.DB_DATABASE,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    dialect: 'postgres',
+    host: process.env.DB_HOST,
 
-const sequelize = new Sequelize('clitool', 'nkwada', 'norash', {
-  host: 'localhost',
-  dialect: 'postgres',
-});
+  });
 
 const Url = sequelize.define('url', {
   long_url: {
@@ -59,7 +65,7 @@ program
 
 async function generateShortURL(url) {
   try {
-    const cleanUriEndpoint = 'https://cleanuri.com/api/v1/shorten';
+    const cleanUriEndpoint = process.env.API_KEY;
 
     const response = await axios.post(cleanUriEndpoint, {
       url: url
@@ -93,3 +99,8 @@ async function listShortenedURLs() {
 }
 
 program.parse(process.argv);
+}
+
+module.exports = {
+  runCLI
+};
