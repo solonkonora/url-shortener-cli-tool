@@ -1,9 +1,11 @@
-const { program } = require('commander');
-const { Sequelize, DataTypes } = require('sequelize');
-const axios = require('axios').default;
-require('dotenv').config();
+import { program } from 'commander';
+import { Sequelize, DataTypes } from 'sequelize';
+import axios from 'axios';
+// require('dotenv').config();
+import { config } from 'dotenv';
+config();
 
-function runCLI() {
+export function runCLI() {
 const sequelize = new Sequelize(
   process.env.DB_DATABASE,
   process.env.DB_USER,
@@ -101,6 +103,7 @@ async function listShortenedURLs() {
 program.parse(process.argv);
 }
 
-module.exports = {
-  runCLI
-};
+// module.exports = {
+//   runCLI
+// };
+ export default  runCLI;

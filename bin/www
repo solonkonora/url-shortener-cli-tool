@@ -1,22 +1,25 @@
 #! /usr/bin/env node
-const { program } = require('commander');
-const { runCLI } = require('../commands/shorten_list.js');
-const sequelize = require('../db_config/db_sequelize.js'); 
-const axios = require('axios');
-require('dotenv').config();
+
+import { program } from 'commander';
+import  runCLI  from '../commands/shorten_list.js';
+import sequelize from '../db_config/db_sequelize.js'; 
+import axios from 'axios';
+import { config } from 'dotenv';
+config();
 
 program
   .name('url-shortener-cli-tool') 
-//   .version('1.0.0') 
   .description('URL Shortener CLI Tool');
 
-sequelize
-  .authenticate()
-  .then(() => {
+async function authenticate() {
+  try {
+    await sequelize.authenticate();
     console.log('Database connection has been established successfully.');
-    //program.parse(process.argv);
     runCLI();
-  })
-  .catch((error) => {
+  } catch (error) {
     console.error('Unable to connect to the database:', error);
-  });
+    throw error;
+  }
+}
+
+authenticate()
