@@ -8,11 +8,17 @@ The URL Shortener CLI Tool is a command-line interface (CLI) application that al
 2. Navigate to the project directory in your terminal.
 3. Run `npm install` to install the required dependencies.
 
+## Dependencies and commands to install
+axios : npm install axios
+commander: npm install commander
+pg : npm install pg
+dotenv: npm install dotenv
+
 ## Configuration
 
 Before using the URL Shortener CLI Tool, you need to configure the PostgreSQL database connection. Follow these steps:
 
-1. Open the `db_sequelize.js` file in a text editor.
+1. Open the `db_config/db_sequelize.js` file in a text editor.
 2. Locate the following lines of code:
 
    ```javascript
@@ -32,14 +38,14 @@ Before using the URL Shortener CLI Tool, you need to configure the PostgreSQL da
 
 ## Usage
 
-To use the URL Shortener CLI Tool, run the `bin/index.js` script followed by the desired command.
+To use the URL Shortener CLI Tool, run the `bin/www.js` script followed by the desired command.
 
 ### Command: shorten
 
 Use the `shorten` command to shorten a URL.
 
 ```shell
-node bin/index.js shorten <url>
+node bin/www.js shorten <url>
 ```
 
 Replace `<url>` with the long URL that you want to shorten.
@@ -47,7 +53,7 @@ Replace `<url>` with the long URL that you want to shorten.
 Example:
 
 ```shell
-node bin/index.js shorten https://www.example.com
+node bin/www.js shorten https://www.example.com
 ```
 
 ### Command: list
@@ -55,13 +61,13 @@ node bin/index.js shorten https://www.example.com
 Use the `list` command to list all previously shortened URLs.
 
 ```shell
-node bin/index.js list
+node bin/www.js list
 ```
 
 Example:
 
 ```shell
-node bin/index.js list
+node bin/www.js list
 ```
 
 ## License

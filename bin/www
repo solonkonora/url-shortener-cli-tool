@@ -1,9 +1,8 @@
 #! /usr/bin/env node
 
 import { program } from 'commander';
-import  runCLI  from '../commands/shorten_list.js';
+import  runCLI  from '../commands/shorten.js';
 import sequelize from '../db_config/db_sequelize.js'; 
-import axios from 'axios';
 import { config } from 'dotenv';
 config();
 
