@@ -13,6 +13,7 @@ axios : npm install axios
 commander: npm install commander
 pg : npm install pg
 dotenv: npm install dotenv
+sequelize: npm install sequelize
 
 ## Configuration
 
@@ -34,18 +35,22 @@ Before using the URL Shortener CLI Tool, you need to configure the PostgreSQL da
   });
    ```
 
-3. Modify the parameters to match your PostgreSQL database configuration. Replace `'process.env.DB_DATABASE'` with your database name, `'process.env.DB_USER'` with your database username, and `'process.env.DB_PASSWORD'` with your database password.
+3. Modify the parameters to match your PostgreSQL database configuration. 
 
 ## Usage
 
-To use the URL Shortener CLI Tool, run the `bin/www.js` script followed by the desired command.
+To use the URL Shortener CLI Tool, 
+1) clone the project and do neccesary configuration
+2) navigate to root direction of the project
+3) install the project as a global package with command "npm install -g url-shorterner-cli-tool"
 
+Note: The external URL shortening service used is "cleanuri" and it does not require any key for its usage.
 ### Command: shorten
 
 Use the `shorten` command to shorten a URL.
 
 ```shell
-node bin/www.js shorten <url>
+url-shorterner-cli-tool shorten <url>
 ```
 
 Replace `<url>` with the long URL that you want to shorten.
@@ -53,7 +58,7 @@ Replace `<url>` with the long URL that you want to shorten.
 Example:
 
 ```shell
-node bin/www.js shorten https://www.example.com
+url-shorterner-cli-tool shorten https://www.example.com
 ```
 
 ### Command: list
@@ -61,15 +66,15 @@ node bin/www.js shorten https://www.example.com
 Use the `list` command to list all previously shortened URLs.
 
 ```shell
-node bin/www.js list
+url-shorterner-cli-tool list
 ```
+### Command: help
 
-Example:
+Use the `help` command to list all previously shortened URLs.
 
 ```shell
-node bin/www.js list
+url-shorterner-cli-tool help
 ```
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
