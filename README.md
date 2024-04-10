@@ -8,35 +8,6 @@ The URL Shortener CLI Tool is a command-line interface (CLI) application that al
 2. Navigate to the project directory in your terminal.
 3. Run `npm install` to install the required dependencies.
 
-## Dependencies and commands to install
-axios : npm install axios
-commander: npm install commander
-pg : npm install pg
-dotenv: npm install dotenv
-sequelize: npm install sequelize
-
-## Configuration
-
-Before using the URL Shortener CLI Tool, you need to configure the PostgreSQL database connection. Follow these steps:
-
-1. Open the `db_config/db_sequelize.js` file in a text editor.
-2. Locate the following lines of code:
-
-   ```javascript
-
-   const sequelize = new Sequelize(
-  process.env.DB_DATABASE,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    dialect: 'postgres',
-    host: process.env.DB_HOST,
-
-  });
-   ```
-
-3. Modify the parameters to match your PostgreSQL database configuration. 
-
 ## Usage
 
 To use the URL Shortener CLI Tool, 
@@ -45,6 +16,8 @@ To use the URL Shortener CLI Tool,
 3) install the project as a global package with command "npm install -g url-shorterner-cli-tool"
 
 Note: The external URL shortening service used is "cleanuri" and it does not require any key for its usage.
+API KEY: https://cleanuri.com/api/v1/shorten
+
 ### Command: shorten
 
 Use the `shorten` command to shorten a URL.
