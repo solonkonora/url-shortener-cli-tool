@@ -1,10 +1,15 @@
 {
   "name": "url-shortener-cli-tool",
   "version": "1.0.0",
-  "description": "A CLI tool for shortening long URLs",
-  "main": "index.js",
+  "description": "A CLI used for shortening a relatively long URL",
+  "main": "bin/index.js",
+  "bin": {
+    "url-shortener-cli-tool": "bin/index.js"
+  },
+"type":"module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "Nkwada Nora Solonko",
   "license": "ISC",
@@ -12,7 +17,7 @@
     "axios": "^1.6.8",
     "commander": "^12.0.0",
     "dotenv": "^16.4.5",
-    "pg": "^8.11.3",
-    "pg-promise": "^11.5.5"
+    "pg": "^8.11.5",
+    "sequelize": "^6.37.2"
   }
 }

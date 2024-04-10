@@ -1,0 +1,24 @@
+#! /usr/bin/env node
+
+import { program } from 'commander';
+import  runCLI  from '../commands/shorten.js';
+import sequelize from '../db_config/db_sequelize.js'; 
+import { config } from 'dotenv';
+config();
+
+program
+  .name('url-shortener-cli-tool') 
+  .description('URL Shortener CLI Tool');
+
+async function authenticate() {
+  try {
+    await sequelize.authenticate();
+    console.log('Database connection has been established successfully.');
+    runCLI();
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+    throw error;
+  }
+}
+
+authenticate()
