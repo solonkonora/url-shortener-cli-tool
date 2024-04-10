@@ -8,6 +8,15 @@ The URL Shortener CLI Tool is a command-line interface (CLI) application that al
 2. Navigate to the project directory in your terminal.
 3. Run `npm install` to install the required dependencies.
 
+
+## Configuration
+
+Before using the URL Shortener CLI Tool, you need to configure the PostgreSQL database connection. Follow these steps:
+
+1) connect the application to your postgres database.
+2) The table urls in the database contains three columns the id, long_url and short_url      columns
+
+
 ## Usage
 
 To use the URL Shortener CLI Tool, 
@@ -16,7 +25,7 @@ To use the URL Shortener CLI Tool,
 3) install the project as a global package with command "npm install -g url-shorterner-cli-tool"
 
 Note: The external URL shortening service used is "cleanuri" and it does not require any key for its usage.
-API KEY: https://cleanuri.com/api/v1/shorten
+API_KEY=https://cleanuri.com/api/v1/shorten
 
 ### Command: shorten
 
